@@ -1,15 +1,25 @@
 import React, { FC, useState } from "react";
 import { Product } from "@/models/Favourite";
-import { useDispatch } from "react-redux";
-import { addFavourite } from "@/redux/favouriteSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addFavourite,
+  addFavouriteToFirestore,
+  removeFavouriteFromFirestore,
+} from "@/redux/favouriteSlice";
+import { AppDispatch, RootState } from "@/redux/store";
 
 const ProductCard: FC<Product> = ({ id, name, url }) => {
-  const [isFavourite, setIsFavourite] = useState<boolean>(false);
-  const dispatch = useDispatch();
-  const toogleFavourite = () => {
-    setIsFavourite(!isFavourite);
-    if (!isFavourite) {
-      dispatch(addFavourite({ id, name, url }));
+  const dispatch = useDispatch<AppDispatch>();
+
+  const isFavourite = useSelector((state: RootState) =>
+    state.favourites.favourites.some((fav) => fav.id === id),
+  );
+
+  const toggleFavourite = () => {
+    if (isFavourite) {
+      dispatch(removeFavouriteFromFirestore(id));
+    } else {
+      dispatch(addFavouriteToFirestore({ id, name, url }));
     }
   };
 
@@ -17,7 +27,7 @@ const ProductCard: FC<Product> = ({ id, name, url }) => {
     <div className="card">
       <p>{name}</p>
       <img src={url} alt="" />
-      <button onClick={toogleFavourite}>
+      <button onClick={toggleFavourite}>
         {isFavourite ? <span>❤️</span> : <span>🤍</span>}
       </button>
     </div>

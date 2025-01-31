@@ -1,24 +1,31 @@
 "use client";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import { Product } from "@/models/Favourite";
-import { removeFavourite, updateFavourite } from "@/redux/favouriteSlice";
+import {
+  removeFavourite,
+  removeFavouriteFromFirestore,
+  updateFavourite,
+  updateFavouriteInFirestore,
+} from "@/redux/favouriteSlice";
 import Link from "next/link";
 
 const FavouritePage = () => {
   const favourites = useSelector(
     (state: RootState) => state.favourites.favourites,
   );
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [editing, setEditing] = useState<Product | null>(null);
 
-  const handleRemove = (id: number) => {
-    dispatch(removeFavourite(id));
+  const handleRemove = (id: string) => {
+    dispatch(removeFavourite(+id));
+    dispatch(removeFavouriteFromFirestore(id));
   };
 
   const handleEdit = (product: Product) => {
     setEditing(product);
+    dispatch(updateFavouriteInFirestore(product));
   };
 
   const handleSave = () => {

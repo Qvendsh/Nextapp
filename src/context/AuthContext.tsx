@@ -37,6 +37,8 @@ export const AuthContextProvider: FC<IProps> = ({ children }) => {
     signOut(auth);
   };
 
+  const signUpWithEmail = (email: string, password: string, name: string) => {};
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser: any) => {
       setUser(currentUser);

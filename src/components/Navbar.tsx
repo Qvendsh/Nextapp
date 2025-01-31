@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { UserAuth } from "@/context/AuthContext";
 
@@ -13,13 +13,21 @@ const Navbar = () => {
     }
   };
 
-  const handleSignUp = async (email: string, password: string) => {
+  const handleSignUpWithGoogle = async (email: string, password: string) => {
     try {
       await emailSignUp(email, password);
     } catch (error) {
       console.log(error);
     }
   };
+
+  // const handleSignInWithGoogle = async (email:string, password: string) => {
+  //   try {
+  //     await
+  //   }catch (error){
+  //     console.log(error)
+  //   }
+  // }
 
   const handleSigOut = async () => {
     try {
@@ -42,9 +50,6 @@ const Navbar = () => {
 
       {!user ? (
         <ul className="flex">
-          <li className="p-2 cursor-pointer" onClick={() => handleSignUp}>
-            sign up
-          </li>
           <li className="p-2 cursor-pointer" onClick={handleSignIn}>
             sign in
           </li>
