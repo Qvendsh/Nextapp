@@ -35,6 +35,8 @@ const PokemonPage = () => {
     setCurrentPage(currentPage + 1);
   };
 
+  console.log("Stripe Key:", process.env.STRIPE_SECRET_KEY);
+
   return (
     <>
       {user ? (
@@ -44,13 +46,14 @@ const PokemonPage = () => {
             {pokemons.map((pokemon: { name: string; url: string }) => {
               const id = pokemon.url.split("/").filter(Boolean).pop();
               const pokemonId = id ? parseInt(id) : null;
+              const pokeId = pokemonId?.toString() ?? "";
 
               return (
                 pokemonId && (
                   <ProductCard
                     key={pokemonId}
                     name={pokemon.name}
-                    id={pokemonId}
+                    id={pokeId}
                     url={pokemon.url}
                   />
                 )

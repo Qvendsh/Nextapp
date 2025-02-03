@@ -21,14 +21,6 @@ const Navbar = () => {
     }
   };
 
-  // const handleSignInWithGoogle = async (email:string, password: string) => {
-  //   try {
-  //     await
-  //   }catch (error){
-  //     console.log(error)
-  //   }
-  // }
-
   const handleSigOut = async () => {
     try {
       await logOut();
@@ -45,6 +37,9 @@ const Navbar = () => {
         </li>
         <li className="p-2 cursor-pointer">
           <Link href="/Pokemon">Pokemon</Link>
+        </li>
+        <li className="p-2 cursor-pointer">
+          <Link href="/Subscribtions">Subscriptions</Link>
         </li>
       </ul>
 
