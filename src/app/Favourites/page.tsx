@@ -34,6 +34,7 @@ const FavouritePage = () => {
       setEditing(null);
     }
   };
+
   return (
     <div>
       <h1>Favourites</h1>

@@ -1,12 +1,23 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import {
   PaymentElement,
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import { convertToSubcurrency } from "@/app/pages/api/create-payment-intent/route";
+import { getAuth } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
 
-const CheckOutPage = ({ amount }: { amount: number }) => {
+const CheckOutPage = ({
+  amount,
+  subscriptionType,
+  email,
+}: {
+  amount: number;
+  subscriptionType: string;
+  email: string;
+}) => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -15,52 +26,69 @@ const CheckOutPage = ({ amount }: { amount: number }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch("/pages/api/create-payment-intent", {
+    fetch("/api/create-payment-intent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ amount: convertToSubcurrency(amount) }),
+      body: JSON.stringify({ amount: Math.round(amount * 100) }),
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
   }, [amount]);
 
+  if (!clientSecret) {
+    return <div>Loading...</div>;
+  }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
 
-    // if (!stripe || !elements) {
-    //   return;
-    // }
+    if (!stripe || !elements) {
+      return;
+    }
 
-    // const { error: submitError } = await elements.submit();
+    const { error: submitError } = await elements.submit();
 
-    // if (submitError) {
-    //   setErrorMessage(submitError.message);
-    //   setLoading(false);
-    //   return;
-    // }
+    if (submitError) {
+      setErrorMessage(submitError.message);
+      setLoading(false);
+      return;
+    }
 
-    // const { error } = await stripe.confirmPayment({
-    //   elements,
-    //   clientSecret,
-    //   confirmParams: {
-    //     return_url: `http://localhost:3000/payment-success?amount=${amount}`,
-    //   },
-    // });
+    const { error } = await stripe.confirmPayment({
+      elements,
+      clientSecret,
+      confirmParams: {
+        return_url: `http://localhost:3000/payment-success?amount=${amount}&subscriptionType=${subscriptionType}`,
+      },
+    });
 
-    // if (error) {
-    //   setErrorMessage(error.message);
-    // } else {
-    //   console.log(errorMessage);
-    // }
+    if (error) {
+      setErrorMessage(error.message);
+    } else {
+      const user = getAuth().currentUser;
+      if (user) {
+        const userRef = doc(db, "users", user.email!);
 
-    setLoading(false);
+        await setDoc(
+          userRef,
+          {
+            email: user.email,
+            subscriptionType,
+            updatedAt: new Date(),
+          },
+          { merge: true },
+        );
+
+        console.log("Subscription updated successfully");
+      }
+    }
   };
 
   return (
-    <div>
+    <>
       <form onSubmit={handleSubmit} className="bg-white p-2  rounded-md">
         {clientSecret && <PaymentElement />}
 
@@ -68,7 +96,7 @@ const CheckOutPage = ({ amount }: { amount: number }) => {
           {!loading ? `Confirm ${amount}` : "Processing..."}
         </button>
       </form>
-    </div>
+    </>
   );
 };
 

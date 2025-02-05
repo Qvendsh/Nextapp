@@ -35,13 +35,11 @@ const PokemonPage = () => {
     setCurrentPage(currentPage + 1);
   };
 
-  console.log("Stripe Key:", process.env.STRIPE_SECRET_KEY);
-
   return (
     <>
       {user ? (
         <div className="">
-          <h1 className={"flex justify-center"}>Products</h1>
+          <h1 className={"flex justify-center"}>Pokemons</h1>
           <div className="grid grid-cols-4 gap-10">
             {pokemons.map((pokemon: { name: string; url: string }) => {
               const id = pokemon.url.split("/").filter(Boolean).pop();
@@ -80,36 +78,3 @@ const PokemonPage = () => {
 };
 
 export default PokemonPage;
-
-// <div className="">
-//   <h1 className={"flex justify-center"}>Products</h1>
-//   <div className="grid grid-cols-4 gap-10">
-//     {pokemons.map((pokemon: { name: string; url: string }) => {
-//       const id = pokemon.url.split("/").filter(Boolean).pop();
-//       const pokemonId = id ? parseInt(id) : null;
-//
-//       return (
-//         pokemonId && (
-//           <ProductCard
-//             key={pokemonId}
-//             name={pokemon.name}
-//             id={pokemonId}
-//             url={pokemon.url}
-//           />
-//         )
-//       );
-//     })}
-//   </div>
-//
-//   <div className="w-full">
-//     <button onClick={handlePrevPage} disabled={currentPage === 1}>
-//       Prev
-//     </button>
-//     <span>Page {currentPage}</span>
-//     <button onClick={handleNextPage}>Next</button>
-//   </div>
-//   <div>
-//     <Link href="/favourites">Go to favourites</Link>
-//   </div>
-// </div>
-// <div> you have to be logged in to view this page</div>

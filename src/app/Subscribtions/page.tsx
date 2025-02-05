@@ -4,7 +4,6 @@ import { UserAuth } from "@/context/AuthContext";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckOutPage from "@/components/CheckOutPage";
-import { convertToSubcurrency } from "@/app/pages/api/create-payment-intent/route";
 
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
   throw new Error("NEXT_PUBLIC_STRIPE_KEY is undefined");
@@ -34,11 +33,15 @@ const Page = () => {
                 stripe={stripePromise}
                 options={{
                   mode: "payment",
-                  amount: convertToSubcurrency(Plus),
+                  amount: Math.round(Plus * 100),
                   currency: "usd",
                 }}
               >
-                <CheckOutPage amount={Plus} />
+                <CheckOutPage
+                  amount={Plus}
+                  subscriptionType={"plus"}
+                  email={user.email}
+                />
               </Elements>
             </div>
           </div>
@@ -54,11 +57,15 @@ const Page = () => {
                 stripe={stripePromise}
                 options={{
                   mode: "payment",
-                  amount: convertToSubcurrency(Pro),
+                  amount: Math.round(Pro * 100),
                   currency: "usd",
                 }}
               >
-                <CheckOutPage amount={Pro} />
+                <CheckOutPage
+                  amount={Pro}
+                  subscriptionType={"pro"}
+                  email={user.email}
+                />
               </Elements>
             </div>
           </div>

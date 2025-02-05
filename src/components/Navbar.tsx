@@ -51,7 +51,9 @@ const Navbar = () => {
         </ul>
       ) : (
         <ul className="flex flex-col  w-[250px] ">
-          <li className="p-2 justify-center">Welcome {user.displayName}</li>
+          <li className="p-2 justify-center">
+            <Link href="/Profile">Welcome {user.displayName}</Link>
+          </li>
           <li
             className="p-2 cursor-pointer justify-center"
             onClick={handleSigOut}
