@@ -8,7 +8,7 @@ const Page = () => {
   return (
     <div className="max-w-6xl mx-auto p-10   text-center border m-10 rounded-md">
       hello {user?.displayName}
-      {user && <SubscriptionMessage />}
+      {user && <SubscriptionMessage subType={""} />}
     </div>
   );
 };

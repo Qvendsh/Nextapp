@@ -3,3 +3,11 @@ export interface User {
   name: string;
   subscription: string;
 }
+
+export interface IUser {
+  name: string;
+  email: string;
+  customerId: string;
+  priceId: string;
+  hasAccess: boolean;
+}
