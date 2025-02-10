@@ -89,6 +89,7 @@ export async function POST(req) {
 
         break;
       }
+      ////////////////////////add case to get automatically money from user after month/year
 
       default:
         console.log(`Unhandled event type: ${eventType}`);

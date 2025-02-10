@@ -36,41 +36,62 @@ const FavouritePage = () => {
   };
 
   return (
-    <div>
-      <h1>Favourites</h1>
-      <div>
+    <div className="flex items-center flex-col p-6 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-bold text-center mb-6 text-blue-600">
+        Favourites
+      </h1>
+      <div className="w-full max-w-lg">
         {favourites.map((product) => (
-          <div key={product.id}>
-            <div>
+          <div
+            key={product.id}
+            className="bg-white rounded-lg shadow-lg p-4 mb-4"
+          >
+            <div className="flex items-center justify-between mb-4">
               {editing?.id === product.id ? (
-                <>
-                  <input
-                    type="text"
-                    value={editing.name}
-                    className={`${editing?.id === product.id ? "bg-[red]" : "pointer-events-none"}`}
-                    onChange={(e) =>
-                      setEditing({ ...editing, name: e.target.value })
-                    }
-                  />
-                </>
+                <input
+                  type="text"
+                  value={editing.name}
+                  className="p-2 border border-gray-300 rounded-md w-full bg-red-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) =>
+                    setEditing({ ...editing, name: e.target.value })
+                  }
+                />
               ) : (
-                <>
-                  <span>{product.name}</span>
-                </>
+                <span className="text-lg font-semibold">{product.name}</span>
               )}
             </div>
-            <div>
-              <button onClick={() => handleRemove(product.id)}>Remove</button>
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => handleRemove(product.id)}
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+              >
+                Remove
+              </button>
               {editing?.id === product.id ? (
-                <button onClick={handleSave}>Save</button>
+                <button
+                  onClick={handleSave}
+                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
+                >
+                  Save
+                </button>
               ) : (
-                <button onClick={() => handleEdit(product)}>Edit</button>
+                <button
+                  onClick={() => handleEdit(product)}
+                  className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition"
+                >
+                  Edit
+                </button>
               )}
             </div>
           </div>
         ))}
       </div>
-      <Link href="/Pokemon">go back</Link>
+      <Link
+        href="/Pokemon"
+        className="mt-6 text-blue-500 hover:text-blue-700 transition"
+      >
+        Go back
+      </Link>
     </div>
   );
 };

@@ -1,7 +1,6 @@
 "use client";
 
 import "./globals.css";
-import { SessionProvider } from "next-auth/react";
 import Providerr from "@/components/Providerr";
 import Navbar from "@/components/Navbar";
 import React from "react";
@@ -15,10 +14,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AuthContextProvider>
-          <SessionProvider>
-            <Navbar></Navbar>
-            <Providerr children={children}></Providerr>
-          </SessionProvider>
+          <Navbar />
+          <Providerr children={children}></Providerr>
         </AuthContextProvider>
       </body>
     </html>

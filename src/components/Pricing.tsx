@@ -11,7 +11,7 @@ export const plans = [
       process.env.NODE_ENV === "development"
         ? "price_1Qp9YJP5kmZAW2pxaciqdMem"
         : "",
-    price: 49.99,
+    price: 59.99,
     duration: "/mounth",
   },
   {
@@ -34,7 +34,7 @@ const Pricing: FC = () => {
   return (
     <>
       <section id="pricing">
-        <div className="py-24 px-8 max-w-5xl mx-auto">
+        <div className="py-24 px-8 max-w-7xl mx-auto">
           <div className="flex flex-col text-center w-full mb-20">
             <p className="font-medium text-primary mb-5">Pricing</p>
             <h2 className="font-bold text-3xl lg:text-5xl tracking-tight">
@@ -43,11 +43,11 @@ const Pricing: FC = () => {
           </div>
 
           <div className="relative flex justify-center flex-col lg:flex-row items-center lg:items-stretch gap-8">
-            <div className=" w-full max-w-lg">
-              <div className="relative flex flex-col h-full gap-5 lg:gap-8 z-10 bg-base-100 p-8 rounded-xl">
+            <div className="w-full max-w-lg">
+              <div className="relative flex flex-col h-full gap-5 lg:gap-8 z-10 bg-white p-8 rounded-xl shadow-xl">
                 <div className="flex items-center gap-8">
                   <div
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 cursor-pointer"
                     onClick={() => setPlan(plans[0])}
                   >
                     <input
@@ -56,10 +56,10 @@ const Pricing: FC = () => {
                       className="radio"
                       checked={plan.price === 19}
                     />
-                    <span>Pay monthly</span>
+                    <span className="font-semibold">Pay monthly</span>
                   </div>
                   <div
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 cursor-pointer"
                     onClick={() => setPlan(plans[1])}
                   >
                     <input
@@ -68,12 +68,14 @@ const Pricing: FC = () => {
                       className="radio"
                       checked={plan.price === 99}
                     />
-                    <span>Pay yearly (60% OFF 💰)</span>
+                    <span className="font-semibold">
+                      Pay yearly (60% OFF 💰)
+                    </span>
                   </div>
                 </div>
 
                 <div className="flex gap-2">
-                  <p className={`text-5xl tracking-tight font-extrabold`}>
+                  <p className="text-5xl tracking-tight font-extrabold text-primary">
                     ${plan.price}
                   </p>
                   <div className="flex flex-col justify-end mb-[4px]">
@@ -85,10 +87,8 @@ const Pricing: FC = () => {
 
                 <ul className="space-y-2.5 leading-relaxed text-base flex-1">
                   {[
-                    {
-                      name: "NextJS boilerplate",
-                    },
-                    { name: "User oauth" },
+                    { name: "NextJS boilerplate" },
+                    { name: "User auth" },
                     { name: "Database" },
                     { name: "Emails" },
                     { name: "1 year of updates" },
@@ -108,13 +108,14 @@ const Pricing: FC = () => {
                         />
                       </svg>
 
-                      <span>{feature.name} </span>
+                      <span>{feature.name}</span>
                     </li>
                   ))}
                 </ul>
+
                 <div className="space-y-2">
                   <a
-                    className="btn btn-primary btn-block "
+                    className="btn btn-primary btn-block text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md py-3"
                     target="_blank"
                     href={
                       plan.link + "?prefilled_email=" + session?.user?.email

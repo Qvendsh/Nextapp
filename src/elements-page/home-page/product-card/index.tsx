@@ -10,6 +10,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 
 const ProductCard: FC<Product> = ({ id, name, url }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const [red, setRed] = useState<boolean>(false);
 
   const isFavourite = useSelector((state: RootState) =>
     state.favourites.favourites.some((fav) => fav.id === id),
@@ -23,12 +24,21 @@ const ProductCard: FC<Product> = ({ id, name, url }) => {
     }
   };
 
+  const toggleHeart = () => {
+    setRed(!red);
+  };
+
   return (
-    <div className="card">
+    <div className=" flex justify-center m-2.5  ">
       <p>{name}</p>
       <img src={url} alt="" />
-      <button onClick={toggleFavourite}>
-        {isFavourite ? <span>❤️</span> : <span>🤍</span>}
+      <button
+        onClick={() => {
+          toggleFavourite();
+          toggleHeart();
+        }}
+      >
+        {red || isFavourite ? <span>❤️</span> : <span>🤍</span>}
       </button>
     </div>
   );
