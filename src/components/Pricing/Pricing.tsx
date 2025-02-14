@@ -1,34 +1,8 @@
 import React, { FC, useState } from "react";
-import { useSession } from "next-auth/react";
 
-export const plans = [
-  {
-    link:
-      process.env.NODE_ENV === "development"
-        ? "https://buy.stripe.com/test_aEU14y1tw8yxgsU001"
-        : "",
-    priceId:
-      process.env.NODE_ENV === "development"
-        ? "price_1Qp9YJP5kmZAW2pxaciqdMem"
-        : "",
-    price: 59.99,
-    duration: "/mounth",
-  },
-  {
-    link:
-      process.env.NODE_ENV === "development"
-        ? "https://buy.stripe.com/test_eVa28C1tw6qpa4wdQS"
-        : "",
-    priceId:
-      process.env.NODE_ENV === "development"
-        ? "price_1Qp9jkP5kmZAW2pxp23xV9LK"
-        : "",
-    price: 159.99,
-    duration: "/year",
-  },
-];
+import { plans } from "./plans";
+
 const Pricing: FC = () => {
-  const { data: session } = useSession();
   const [plan, setPlan] = useState(plans[0]);
 
   return (
@@ -37,8 +11,8 @@ const Pricing: FC = () => {
         <div className="py-24 px-8 max-w-7xl mx-auto">
           <div className="flex flex-col text-center w-full mb-20">
             <p className="font-medium text-primary mb-5">Pricing</p>
-            <h2 className="font-bold text-3xl lg:text-5xl tracking-tight">
-              DOPOBACHENNYA
+            <h2 className="font-bold text-3xl lg:text-5xl tracking-tight uppercase">
+              dopobachennya
             </h2>
           </div>
 
@@ -117,9 +91,7 @@ const Pricing: FC = () => {
                   <a
                     className="btn btn-primary btn-block text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md py-3"
                     target="_blank"
-                    href={
-                      plan.link + "?prefilled_email=" + session?.user?.email
-                    }
+                    href={plan.link}
                   >
                     Subscribe
                   </a>

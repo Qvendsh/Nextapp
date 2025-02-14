@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Pricing from "@/components/Pricing";
+import Pricing from "@/components/Pricing/Pricing";
 
 const Page = () => {
   return (

@@ -1,15 +1,11 @@
+"use client";
 import React, { useState } from "react";
 import Link from "next/link";
 import { UserAuth } from "@/context/AuthContext";
 
 const Navbar = () => {
   const { user, googleSignIn, logOut, emailSignUp } = UserAuth() || {};
-
-  // const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  // const toggleSidebar = () => {
-  //   setSidebarOpen(!sidebarOpen);
-  // };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleSignIn = async () => {
     try {
@@ -27,7 +23,7 @@ const Navbar = () => {
     }
   };
 
-  const handleSigOut = async () => {
+  const handleSignOut = async () => {
     try {
       await logOut();
     } catch (error) {
@@ -38,7 +34,8 @@ const Navbar = () => {
   return (
     <div>
       <div className="h-20 w-full flex items-center justify-between p-2">
-        <ul className="flex">
+        {/* Desktop Navigation */}
+        <ul className="hidden md:flex">
           <li className="p-2 cursor-pointer">
             <Link href="/">Home</Link>
           </li>
@@ -52,112 +49,73 @@ const Navbar = () => {
             <Link href="/Subscriptions">Subscriptions</Link>
           </li>
         </ul>
+
+        <div className="md:hidden flex items-center">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="p-2 cursor-pointer"
+          >
+            <span className="text-xl">☰</span>
+          </button>
+        </div>
+
         {!user ? (
-          <ul className="flex">
+          <ul className="hidden md:flex">
             <li className="p-2 cursor-pointer" onClick={handleSignIn}>
               sign in with Google
             </li>
           </ul>
         ) : (
-          <ul className="flex flex-col  w-[250px] ">
+          <ul className="hidden md:flex flex-col w-[250px]">
             <li className="p-2 justify-center">
               <Link href="/Profile">Welcome {user.displayName}</Link>
             </li>
             <li
               className="p-2 cursor-pointer justify-center"
-              onClick={handleSigOut}
+              onClick={handleSignOut}
             >
               sign out
             </li>
           </ul>
         )}
       </div>
+
+      {isMenuOpen && (
+        <div className="md:hidden">
+          <ul className="flex flex-col items-center bg-gray-100 p-4">
+            <li className="p-2 cursor-pointer">
+              <Link href="/">Home</Link>
+            </li>
+            <li className="p-2 cursor-pointer">
+              <Link href="/Pokemon">Pokemon</Link>
+            </li>
+            <li className="p-2 cursor-pointer">
+              <Link href="/Support-us">Support us</Link>
+            </li>
+            <li className="p-2 cursor-pointer">
+              <Link href="/Subscriptions">Subscriptions</Link>
+            </li>
+            {!user ? (
+              <li className="p-2 cursor-pointer" onClick={handleSignIn}>
+                sign in with Google
+              </li>
+            ) : (
+              <>
+                <li className="p-2 cursor-pointer">
+                  <Link href="/Profile">Welcome {user.displayName}</Link>
+                </li>
+                <li className="p-2 cursor-pointer" onClick={handleSignOut}>
+                  sign out
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+      )}
+
       <hr />
     </div>
   );
 };
 
 export default Navbar;
-
-// return (
-//   <div>
-//     <div className="h-20 w-full flex items-center justify-between p-2">
-//       <ul className="flex sm:flex-row sm:space-x-4 flex-col sm:hidden">
-//         <li className="p-2 cursor-pointer">
-//           <Link href="/">Home</Link>
-//         </li>
-//         <li className="p-2 cursor-pointer">
-//           <Link href="/Pokemon">Pokemon</Link>
-//         </li>
-//         <li className="p-2 cursor-pointer">
-//           <Link href="/Support-us">Support us</Link>
-//         </li>
-//         <li className="p-2 cursor-pointer">
-//           <Link href="/Subscriptions">Subscriptions</Link>
-//         </li>
-//       </ul>
-//
-//       <button
-//         className="sm:hidden p-2 bg-blue-500 text-white rounded"
-//         onClick={toggleSidebar}
-//       >
-//         ☰
-//       </button>
-//
-//       {!user ? (
-//         <ul className="flex sm:flex-row">
-//           <li className="p-2 cursor-pointer" onClick={handleSignIn}>
-//             sign in with Google
-//           </li>
-//         </ul>
-//       ) : (
-//         <ul className="flex flex-col w-[250px]">
-//           <li className="p-2 justify-center">
-//             <Link href="/Profile">Welcome {user.displayName}</Link>
-//           </li>
-//           <li
-//             className="p-2 cursor-pointer justify-center"
-//             onClick={handleSigOut}
-//           >
-//             sign out
-//           </li>
-//         </ul>
-//       )}
-//     </div>
-//
-//     {sidebarOpen && (
-//       <div className="fixed top-0 left-0 h-full bg-gray-800 text-white w-64 p-4 sm:hidden">
-//         <ul>
-//           <li className="p-2 cursor-pointer">
-//             <Link href="/">Home</Link>
-//           </li>
-//           <li className="p-2 cursor-pointer">
-//             <Link href="/Pokemon">Pokemon</Link>
-//           </li>
-//           <li className="p-2 cursor-pointer">
-//             <Link href="/Support-us">Support us</Link>
-//           </li>
-//           <li className="p-2 cursor-pointer">
-//             <Link href="/Subscriptions">Subscriptions</Link>
-//           </li>
-//           {!user ? (
-//             <li className="p-2 cursor-pointer" onClick={handleSignIn}>
-//               sign in with Google
-//             </li>
-//           ) : (
-//             <>
-//               <li className="p-2 cursor-pointer">
-//                 <Link href="/Profile">Welcome {user.displayName}</Link>
-//               </li>
-//               <li className="p-2 cursor-pointer" onClick={handleSigOut}>
-//                 sign out
-//               </li>
-//             </>
-//           )}
-//         </ul>
-//       </div>
-//     )}
-//
-//     <hr />
-//   </div>
-// );
